@@ -1,0 +1,49 @@
+name: CI
+on: [push]
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - name: checkout
+        uses: actions/checkout@v2
+
+      - name: use Node 12 (LTS)
+        uses: actions/setup-node@v1
+        with:
+          node-version: 12.x
+          registry-url: 'https://registry.npmjs.org'
+
+      - name: use cached node_modules
+        uses: actions/cache@v1
+        with:
+          path: node_modules
+          key: nodeModules-${{ hashFiles('**/package-lock.json') }}
+          restore-keys: |
+            nodeModules-
+      - name: install dependencies
+        run: npm install --ignore-scripts
+        env:
+          CI: true
+
+      - name: lint
+        run: npm run lint
+        env:
+          CI: true
+
+      - name: test
+        run: npm t --if-present -- --ci --coverage --maxWorkers=2
+        env:
+          CI: true
+
+      - name: build
+        if: github.ref == 'refs/heads/master'
+        run: npm run build --if-present
+        env:
+          CI: true
+
+      - name: publish
+        if: github.ref == 'refs/heads/master'
+        run: npm publish --access=public
+        env:
+          NODE_AUTH_TOKEN: ${{ secrets.NODE_AUTH_TOKEN }}
