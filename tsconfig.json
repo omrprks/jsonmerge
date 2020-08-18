@@ -1,7 +1,7 @@
 {
   "include": ["src", "types"],
   "compilerOptions": {
-    "module": "esnext",
+    "module": "es2015",
     "lib": ["dom", "esnext"],
     "target": "es5",
     "outDir": "dist",
