@@ -84,7 +84,7 @@ export const handler = (argv: Arguments): void => {
       process.exit(0);
     }
 
-    fs.writeFile(out, JSON.stringify(output), (error) => {
+    fs.writeFile(out, JSON.stringify(output, null, argv.pretty ? '  ' : undefined), (error) => {
       if (error) {
         throw error;
       }
