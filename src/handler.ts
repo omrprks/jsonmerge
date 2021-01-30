@@ -74,17 +74,17 @@ export const handler = (argv: Arguments): void => {
       };
     }
 
+    const result = argv.js
+      ? util.inspect(output, false, null, !out)
+      : JSON.stringify(output, null, argv.pretty ? '  ' : undefined);
+
     if (!out) {
-      console.log(
-        argv.js
-          ? util.inspect(output, false, null, true)
-          : JSON.stringify(output, null, argv.pretty ? '  ' : undefined),
-      );
+      console.log(result);
 
       process.exit(0);
     }
 
-    fs.writeFile(out, JSON.stringify(output, null, argv.pretty ? '  ' : undefined), (error) => {
+    fs.writeFile(out, result, (error) => {
       if (error) {
         throw error;
       }
