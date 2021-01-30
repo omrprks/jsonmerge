@@ -15,6 +15,5 @@ yargs
   .describe('js', 'Prints output as javascript object')
   .boolean('pretty')
   .describe('pretty', 'Pretty-prints json output')
-  .conflicts('js', 'pretty')
   .command('$0 <main> <files...>', 'Small tool for merging json files', {}, handler)
   .argv;

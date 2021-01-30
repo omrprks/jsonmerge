@@ -75,7 +75,12 @@ export const handler = (argv: Arguments): void => {
     }
 
     const result = argv.js
-      ? util.inspect(output, false, null, !out)
+      ? util.inspect(output, {
+        showHidden: false,
+        depth: null,
+        colors: !out,
+        compact: !argv.pretty,
+      })
       : JSON.stringify(output, null, argv.pretty ? '  ' : undefined);
 
     if (!out) {
