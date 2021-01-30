@@ -2,6 +2,8 @@ import fs from 'fs';
 import util from 'util';
 import { Arguments } from 'yargs';
 
+import expand from './lib/expand';
+
 type Others = Record<string, string> & { _: string[] };
 
 type Argv = Arguments & {
@@ -52,16 +54,22 @@ export const handler = (argv: Arguments): void => {
       ...replacements
     } = others;
 
-    Object.keys(replacements).forEach((key) => {
+    const keys = Object.keys(replacements);
+    for (let i = 0; i < keys.length; i += 1) {
+      const key = keys[i];
       const file: string = replacements[key];
 
       if (!fs.existsSync(file)) {
         throw new Error(`${file}: No such file or directory`);
       }
 
+      const parts = key.split('.').filter(Boolean);
       const buffer = fs.readFileSync(file);
-      output[key] = JSON.parse(buffer.toString());
-    });
+      output = {
+        ...output,
+        ...expand(parts, JSON.parse(buffer.toString())),
+      };
+    }
 
     for (let i = 0; i < _.length; i += 1) {
       const filename = _[i];
