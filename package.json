@@ -18,7 +18,7 @@
     "jsonmerge": "./dist/index.js"
   },
   "engines": {
-    "node": ">=10"
+    "node": ">=16"
   },
   "scripts": {
     "commit": "git-cz",

@@ -8,10 +8,10 @@ jobs:
       - name: checkout
         uses: actions/checkout@v2
 
-      - name: use Node 12 (LTS)
+      - name: use Node 16 (LTS)
         uses: actions/setup-node@v1
         with:
-          node-version: 12.x
+          node-version: 16.x
           registry-url: 'https://registry.npmjs.org'
 
       - name: use cached node_modules
