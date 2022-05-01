@@ -1,6 +1,6 @@
 {
   "name": "@omrprks/jsonmerge",
-  "version": "1.4.0",
+  "version": "1.4.1",
   "private": false,
   "description": "Small tool for merging json files",
   "repository": "github:omrprks/jsonmerge.git",
@@ -18,7 +18,7 @@
     "jsonmerge": "./dist/index.js"
   },
   "engines": {
-    "node": ">=10"
+    "node": ">=16"
   },
   "scripts": {
     "commit": "git-cz",
