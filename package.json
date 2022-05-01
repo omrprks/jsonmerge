@@ -1,6 +1,6 @@
 {
   "name": "@omrprks/jsonmerge",
-  "version": "1.4.0",
+  "version": "1.4.1",
   "private": false,
   "description": "Small tool for merging json files",
   "repository": "github:omrprks/jsonmerge.git",
@@ -18,7 +18,7 @@
     "jsonmerge": "./dist/index.js"
   },
   "engines": {
-    "node": ">=10"
+    "node": ">=16"
   },
   "scripts": {
     "commit": "git-cz",
@@ -29,7 +29,7 @@
     "lint:fix": "npm run lint -- --fix"
   },
   "devDependencies": {
-    "@commitlint/cli": "^11.0.0",
+    "@commitlint/cli": "^16.2.4",
     "@commitlint/config-conventional": "^11.0.0",
     "@types/node": "^14.14.22",
     "@types/yargs": "^15.0.13",
