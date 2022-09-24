@@ -3,7 +3,7 @@ import util from 'util';
 import assert from 'assert';
 import { Arguments } from 'yargs';
 
-import expand from './lib/expand';
+import { expand } from './lib/expand';
 
 type Others = Record<string, string> & { _: string[] };
 
@@ -80,7 +80,7 @@ export const handler = (argv: Arguments): void => {
       const parts = key.split('.').filter(Boolean);
       output = {
         ...output,
-        ...expand(parts, content),
+        ...expand(parts, content, output),
       };
     }
 
