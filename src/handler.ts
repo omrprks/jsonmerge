@@ -1,5 +1,6 @@
 import fs from 'fs';
 import util from 'util';
+import assert from 'assert';
 import { Arguments } from 'yargs';
 
 import expand from './lib/expand';
@@ -9,7 +10,7 @@ type Others = Record<string, string> & { _: string[] };
 type Argv = Arguments & {
   main: string;
   files: string[];
-  out: string | undefined;
+  out?: string;
 };
 
 export const handler = (argv: Arguments): void => {
@@ -59,15 +60,26 @@ export const handler = (argv: Arguments): void => {
       const key = keys[i];
       const file: string = replacements[key];
 
-      if (!fs.existsSync(file)) {
-        throw new Error(`${file}: No such file or directory`);
+      let content = null;
+
+      const splitFiles = file.split(',');
+      for (let j = 0; j < splitFiles.length; j += 1) {
+        const currentFile = splitFiles[j];
+        if (!fs.existsSync(currentFile)) {
+          throw new Error(`${currentFile}: No such file or directory`);
+        }
+
+        const buffer = fs.readFileSync(currentFile);
+        content = {
+          ...(content || {}),
+          ...JSON.parse(buffer.toString()),
+        };
       }
 
       const parts = key.split('.').filter(Boolean);
-      const buffer = fs.readFileSync(file);
       output = {
         ...output,
-        ...expand(parts, JSON.parse(buffer.toString())),
+        ...expand(parts, content),
       };
     }
 
@@ -105,6 +117,7 @@ export const handler = (argv: Arguments): void => {
       console.info(`OK: ${out}`);
     });
   } catch (error) {
+    assert(error instanceof Error);
     console.error(error.message || error);
     process.exit(1);
   }
