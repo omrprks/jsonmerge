@@ -70,10 +70,11 @@ export const handler = (argv: Arguments): void => {
         }
 
         const buffer = fs.readFileSync(currentFile);
-        content = {
-          ...(content || {}),
-          ...JSON.parse(buffer.toString()),
-        };
+        const parsed = JSON.parse(buffer.toString());
+
+        content = Array.isArray(parsed)
+          ? [...(content || []), ...parsed]
+          : { ...(content || {}), ...parsed };
       }
 
       const parts = key.split('.').filter(Boolean);
