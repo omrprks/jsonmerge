@@ -3,7 +3,7 @@ import util from 'util';
 import assert from 'assert';
 import { Arguments } from 'yargs';
 
-import expand from './lib/expand';
+import { expand } from './lib/expand';
 
 type Others = Record<string, string> & { _: string[] };
 
@@ -70,16 +70,17 @@ export const handler = (argv: Arguments): void => {
         }
 
         const buffer = fs.readFileSync(currentFile);
-        content = {
-          ...(content || {}),
-          ...JSON.parse(buffer.toString()),
-        };
+        const parsed = JSON.parse(buffer.toString());
+
+        content = Array.isArray(parsed)
+          ? [...(content || []), ...parsed]
+          : { ...(content || {}), ...parsed };
       }
 
       const parts = key.split('.').filter(Boolean);
       output = {
         ...output,
-        ...expand(parts, content),
+        ...expand(parts, content, output),
       };
     }
 
